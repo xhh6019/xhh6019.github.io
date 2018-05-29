@@ -1,4 +1,3 @@
-require("amd-loader");
 define([], function () {
     return {
         page: 1,
