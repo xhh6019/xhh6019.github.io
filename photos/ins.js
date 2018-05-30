@@ -368,7 +368,7 @@
           item = {
             src: linkEl.getAttribute('href'),
 //            w: parseInt(size[0], 10),
-            h: 80%
+            h: "80%"
           };
 
           if (figureEl.children.length > 1) {
