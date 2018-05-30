@@ -435,42 +435,8 @@
           }
           nodeIndex++;
         }
-
-        if (index >= 0) {
-          // open PhotoSwipe if valid index found
-          openPhotoSwipe(index, clickedGallery);
-        }
-        return false;
-      };
-
-      // parse picture index and gallery index from URL (#&pid=1&gid=2)
-      var photoswipeParseHash = function photoswipeParseHash() {
-        var hash = window.location.hash.substring(1),
-          params = {};
-
-        if (hash.length < 5) {
-          return params;
-        }
-
-        var vars = hash.split('&');
-        for (var i = 0; i < vars.length; i++) {
-          if (!vars[i]) {
-            continue;
-          }
-          var pair = vars[i].split('=');
-          if (pair.length < 2) {
-            continue;
-          }
-          params[pair[0]] = pair[1];
-        }
-
-        if (params.gid) {
-          params.gid = parseInt(params.gid, 10);
-        }
-
-        return params;
-      };
-
+		  
+		  
       var openPhotoSwipe = function openPhotoSwipe(index, galleryElement, disableAnimation, fromURL) {
         var pswpElement = document.querySelectorAll('.pswp')[0],
           gallery,
@@ -560,6 +526,42 @@
         gallery.listen('initialZoomIn', changeHandle);
         gallery.listen('afterChange', changeHandle);
         gallery.listen('initialZoomOut', stopVideoHandle);
+      };
+
+
+        if (index >= 0) {
+          // open PhotoSwipe if valid index found
+          openPhotoSwipe(index, clickedGallery);
+        }
+        return false;
+      };
+
+      // parse picture index and gallery index from URL (#&pid=1&gid=2)
+      var photoswipeParseHash = function photoswipeParseHash() {
+        var hash = window.location.hash.substring(1),
+          params = {};
+
+        if (hash.length < 5) {
+          return params;
+        }
+
+        var vars = hash.split('&');
+        for (var i = 0; i < vars.length; i++) {
+          if (!vars[i]) {
+            continue;
+          }
+          var pair = vars[i].split('=');
+          if (pair.length < 2) {
+            continue;
+          }
+          params[pair[0]] = pair[1];
+        }
+
+        if (params.gid) {
+          params.gid = parseInt(params.gid, 10);
+        }
+
+        return params;
       };
 
       // loop through all gallery elements and bind events
