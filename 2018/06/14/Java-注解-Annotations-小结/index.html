@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://xhh6019.github.io">
-  <title>Tag: Markdown | 尾巴</title>
+  <title>Java 注解 Annotations 小结 | 尾巴</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="尾巴">
-<meta property="og:url" content="https://xhh6019.github.io/tags/Markdown/index.html">
+  <meta name="description" content="一直对Java注解的东西一知半解，对各个库中用到的注解方式也只能记住，并不知道原理。今天就找一些相关的资料做一些联系，学习一下。  Java1.5引入了注解，当前许多java框架中大量使用注解，如Hibernate、Jersey、Spring。注解作为程序的元数据嵌入到程序当中。注解可以被一些解析工具或者是编译工具进行解析。我们也可以声明注解在编译过程或执行时产生作用。 创建Java自定义注解@D">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 注解 Annotations 小结">
+<meta property="og:url" content="https://xhh6019.github.io/2018/06/14/Java-注解-Annotations-小结/index.html">
 <meta property="og:site_name" content="尾巴">
+<meta property="og:description" content="一直对Java注解的东西一知半解，对各个库中用到的注解方式也只能记住，并不知道原理。今天就找一些相关的资料做一些联系，学习一下。  Java1.5引入了注解，当前许多java框架中大量使用注解，如Hibernate、Jersey、Spring。注解作为程序的元数据嵌入到程序当中。注解可以被一些解析工具或者是编译工具进行解析。我们也可以声明注解在编译过程或执行时产生作用。 创建Java自定义注解@D">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-06-14T08:39:49.488Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="尾巴">
+<meta name="twitter:title" content="Java 注解 Annotations 小结">
+<meta name="twitter:description" content="一直对Java注解的东西一知半解，对各个库中用到的注解方式也只能记住，并不知道原理。今天就找一些相关的资料做一些联系，学习一下。  Java1.5引入了注解，当前许多java框架中大量使用注解，如Hibernate、Jersey、Spring。注解作为程序的元数据嵌入到程序当中。注解可以被一些解析工具或者是编译工具进行解析。我们也可以声明注解在编译过程或执行时产生作用。 创建Java自定义注解@D">
   
     <link rel="alternative" href="/atom.xml" title="尾巴" type="application/atom+xml">
   
@@ -150,60 +155,396 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Java-注解-Annotations-小结" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/06/05/Markdown语法入门/" class="archive-article-date">
-  	<time datetime="2018-06-05T05:59:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-05</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/05/Markdown语法入门/">Markdown语法入门</a>
+    <h1 class="article-title" itemprop="name">
+      Java 注解 Annotations 小结
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/06/14/Java-注解-Annotations-小结/" class="archive-article-date">
+  	<time datetime="2018-06-14T08:38:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一直对Java注解的东西一知半解，对各个库中用到的注解方式也只能记住，并不知道原理。今天就找一些相关的资料做一些联系，学习一下。</p>
+<hr>
+<p>Java1.5引入了注解，当前许多java框架中大量使用注解，如Hibernate、Jersey、Spring。注解作为程序的元数据嵌入到程序当中。注解可以被一些解析工具或者是编译工具进行解析。我们也可以声明注解在编译过程或执行时产生作用。</p>
+<h5 id="创建Java自定义注解"><a href="#创建Java自定义注解" class="headerlink" title="创建Java自定义注解"></a>创建Java自定义注解</h5><pre><code>@Documented
+@Target(ElementType.METHOD)
+
+@Inherited
+@Retention(RetentionPolicy.RUNTIME)
+/*public*/ @interface MethodInfo {
+
+    int revision() default 1;
+
+    String comments() default &quot;&quot;;
+
+    String value() default &quot;&quot;;
+}
+</code></pre><a id="more"></a>
+<p>多个Target的注释方法</p>
+<pre><code>@Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD,
+            ElementType.PARAMETER, ElementType.CONSTRUCTOR,
+            ElementType.LOCAL_VARIABLE})
+</code></pre><ol>
+<li>注解方法不能带有参数；  </li>
+<li>注解方法返回值类型限定为：基本类型、String、Enums、Annotation或者是这些类型的数组；  </li>
+<li>注解方法可以有默认值；  </li>
+<li>注解本身能够包含元注解，元注解被用来注解其它注解。  </li>
+</ol>
+<p>这里有四种类型的元注解：</p>
+<ol>
+<li><p>@Documented —— 指明拥有这个注解的元素可以被javadoc此类的工具文档化。这种类型应该用于注解那些影响客户使用带注释的元素声明的类型。如果一种声明使用Documented进行注解，这种类型的注解被作为被标注的程序成员的公共API。</p>
+</li>
+<li><p>@Target——指明该类型的注解可以注解的程序元素的范围。该元注解的取值可以为TYPE,METHOD,CONSTRUCTOR,FIELD等。如果Target元注解没有出现，那么定义的注解可以应用于程序的任何元素。</p>
+</li>
+<li><p>@Inherited——指明该注解类型被自动继承。如果用户在当前类中查询这个元注解类型并且当前类的声明中不包含这个元注解类型，那么也将自动查询当前类的父类是否存在Inherited元注解，这个动作将被重复执行知道这个标注类型被找到，或者是查询到顶层的父类。</p>
+</li>
+</ol>
+<p>4.@Retention——指明了该Annotation被保留的时间长短。RetentionPolicy取值为SOURCE,CLASS,RUNTIME。</p>
+<blockquote>
+<p>Java内建注解</p>
+<p>Java提供了三种内建注解。</p>
+<ol>
+<li><p>@Override——当我们想要复写父类中的方法时，我们需要使用该注解去告知编译器我们想要复写这个方法。这样一来当父类中的方法移除或者发生更改时编译器将提示错误信息。</p>
+</li>
+<li><p>@Deprecated——当我们希望编译器知道某一方法不建议使用时，我们应该使用这个注解。Java在javadoc 中推荐使用该注解，我们应该提供为什么该方法不推荐使用以及替代的方法。</p>
+</li>
+<li><p>@SuppressWarnings——这个仅仅是告诉编译器忽略特定的警告信息，例如在泛型中使用原生数据类型。它的保留策略是SOURCE（译者注：在源文件中有效）并且被编译器丢弃。</p>
+</li>
+</ol>
+</blockquote>
+<h5 id="使用注解："><a href="#使用注解：" class="headerlink" title="使用注解："></a>使用注解：</h5><pre><code>public class AnnotationsMain {
+
+    @Override
+    @MethodInfo(value = &quot;abc&quot;, comments = &quot;toString method&quot;,revision = 8)
+    public String toString() {
+        return &quot;Overriden toString method&quot;;
+    }
+
+    @Deprecated
+    @MethodInfo(&quot;oldMethod&quot;)//value方法可以默认不写name
+    public static void oldMethod() {
+        throw new NotImplementedException();
+    }
+
+    @SuppressWarnings({&quot;unchecked&quot;, &quot;deprecation&quot;})
+    @MethodInfo(comments = &quot;uncheck method&quot;, revision = 10)
+    public static void uncheck() throws FileNotFoundException {
+    }
+
+}
+</code></pre><h5 id="解析获取注解数据"><a href="#解析获取注解数据" class="headerlink" title="解析获取注解数据"></a>解析获取注解数据</h5><ol>
+<li>通过AnnotationsMain.class反射调用获取Methods。</li>
+<li>通过method的isAnnotationPresent接口判断是否使用了我们的注释MethodInfo.class。 </li>
+<li>最后通过MethodInfo methodAnno = method.getAnnotation(MethodInfo.class);获取注释接口实例。</li>
+<li><p>然后调用对应的revision()方法获取值。</p>
+<pre><code>    try {
+    for (Method method : AnnotationsMain.class
+            .getClassLoader()
+            .loadClass(&quot;com.xhh.client.AnnotationsMain&quot;)
+            .getMethods()) {
+        // checks if MethodInfo annotation is present for the method
+        if (method.isAnnotationPresent(/*com.xhh.client.*/MethodInfo.class)) {
+            try {
+                // iterates all the annotations available in the method
+                System.out.println(&quot;method=&quot;+method);
+                for (Annotation anno : method.getDeclaredAnnotations()) {
+                    System.out.println(&quot;Annotation=&quot; + anno);
+                }
+                MethodInfo methodAnno = method.getAnnotation(MethodInfo.class);
+                if (methodAnno != null) {
+                    System.out.print(&quot;args: revision=&quot; + methodAnno.revision());
+                    System.out.print(&quot; comments=&quot; + methodAnno.comments());
+                    System.out.println(&quot; value=&quot; + methodAnno.value());
+                }
+
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+} catch (SecurityException | ClassNotFoundException e) {
+    e.printStackTrace();
+}
+</code></pre></li>
+</ol>
+<p>输出的结果为：</p>
+<pre><code>method=public java.lang.String com.xhh.client.AnnotationsMain.toString()
+Annotation=@com.xhh.client.MethodInfo(value=abc, revision=8, comments=toString method)
+args: revision=8 comments=toString method value=abc
+
+method=public static void com.xhh.client.AnnotationsMain.uncheck() throws java.io.FileNotFoundException
+Annotation=@com.xhh.client.MethodInfo(value=, revision=10, comments=uncheck method)
+args: revision=10 comments=uncheck method value=
+
+method=public static void com.xhh.client.AnnotationsMain.oldMethod()
+Annotation=@java.lang.Deprecated()
+Annotation=@com.xhh.client.MethodInfo(value=oldMethod, revision=1, comments=)
+args: revision=1 comments= value=oldMethod
+</code></pre><h4 id="简单分析Retrofit中的注释解析过程"><a href="#简单分析Retrofit中的注释解析过程" class="headerlink" title="简单分析Retrofit中的注释解析过程"></a>简单分析Retrofit中的注释解析过程</h4><ol>
+<li>定义一个service接口  </li>
+</ol>
+<pre><code>public interface BlogService {
+    @GET(&quot;blog/{id}&quot;) //这里的{id} 表示是一个变量
+    Call&lt;ResponseBody&gt; getBlog(/** 这里的id表示的是上面的{id} */@Path(&quot;id&quot;) int id);
+}
+</code></pre><ol start="2">
+<li>使用Retrofit的create接口实例化service接口  </li>
+</ol>
+<pre><code>BlogService service = retrofit.create(BlogService.class);
+</code></pre><p>进入create方法：</p>
+<pre><code>public &lt;T&gt; T create(final Class&lt;T&gt; service) {
+    ...
+    return (T) Proxy.newProxyInstance(service.getClassLoader(), new Class&lt;?&gt;[] { service },
+    new InvocationHandler() {
+      private final Platform platform = Platform.get();
+
+      @Override public Object invoke(Object proxy, Method method, Object... args)
+          throws Throwable {
+        // If the method is a method from Object then defer to normal invocation.
+        if (method.getDeclaringClass() == Object.class) {
+          return method.invoke(this, args);
+        }
+        if (platform.isDefaultMethod(method)) {
+          return platform.invokeDefaultMethod(method, service, proxy, args);
+        }
+        ServiceMethod serviceMethod = loadServiceMethod(method);
+        OkHttpCall okHttpCall = new OkHttpCall&lt;&gt;(serviceMethod, args);
+        return serviceMethod.callAdapter.adapt(okHttpCall);
+      }
+    });
+}
+</code></pre><p>Proxy.newProxyInstance()是java.lang.reflect里的方法，属于反射技术不管它，这边最主要的是通过<strong>InvocationHandler接口</strong>获得method方法，然后<strong>解析注解</strong>，生成注解对应的方法和OkHttpCall之间的关系。</p>
+<pre><code>ServiceMethod serviceMethod = loadServiceMethod(method);//解析注解
+OkHttpCall okHttpCall = new OkHttpCall&lt;&gt;(serviceMethod, args);//传入OKHttp
+return serviceMethod.callAdapter.adapt(okHttpCall);返回接口
+</code></pre><p>解析方法： </p>
+<pre><code>ServiceMethod loadServiceMethod(Method method) {
+  ServiceMethod result;
+  synchronized (serviceMethodCache) {
+    result = serviceMethodCache.get(method);
+    if (result == null) {
+      result = new ServiceMethod.Builder(this, method).build();
+      serviceMethodCache.put(method, result);
+    }
+  }
+  return result;
+}
+</code></pre><p>方法关系保存在:</p>
+<pre><code>private final Map&lt;Method, ServiceMethod&gt; serviceMethodCache = new LinkedHashMap&lt;&gt;();
+</code></pre><p>传入Method解析流程：</p>
+<pre><code>result = new ServiceMethod.Builder(this, method).build();
+</code></pre><p>进入build,里面遍历了Annotation注释:</p>
+<pre><code>public ServiceMethod build() {
+...
+    for (Annotation annotation : methodAnnotations) {
+        parseMethodAnnotation(annotation);
+    }
+...
+}
+</code></pre><p>最后就是解析具体的注释了，</p>
+<pre><code>private void parseMethodAnnotation(Annotation annotation) {
+  if (annotation instanceof DELETE) {
+    parseHttpMethodAndPath(&quot;DELETE&quot;, ((DELETE) annotation).value(), false);
+  } else if (annotation instanceof GET) {
+    parseHttpMethodAndPath(&quot;GET&quot;, ((GET) annotation).value(), false);
+  } else if (annotation instanceof HEAD) {
+    parseHttpMethodAndPath(&quot;HEAD&quot;, ((HEAD) annotation).value(), false);
+    if (!Void.class.equals(responseType)) {
+      throw methodError(&quot;HEAD method must use Void as response type.&quot;);
+    }
+  } else if (annotation instanceof PATCH) {
+    parseHttpMethodAndPath(&quot;PATCH&quot;, ((PATCH) annotation).value(), true);
+  } else if (annotation instanceof POST) {
+    parseHttpMethodAndPath(&quot;POST&quot;, ((POST) annotation).value(), true);
+  } else if (annotation instanceof PUT) {
+    parseHttpMethodAndPath(&quot;PUT&quot;, ((PUT) annotation).value(), true);
+  } else if (annotation instanceof OPTIONS) {
+    parseHttpMethodAndPath(&quot;OPTIONS&quot;, ((OPTIONS) annotation).value(), false);
+  } else if (annotation instanceof HTTP) {
+    HTTP http = (HTTP) annotation;
+    parseHttpMethodAndPath(http.method(), http.path(), http.hasBody());
+  } else if (annotation instanceof retrofit2.http.Headers) {
+    String[] headersToParse = ((retrofit2.http.Headers) annotation).value();
+    if (headersToParse.length == 0) {
+      throw methodError(&quot;@Headers annotation is empty.&quot;);
+    }
+    headers = parseHeaders(headersToParse);
+  } else if (annotation instanceof Multipart) {
+    if (isFormEncoded) {
+      throw methodError(&quot;Only one encoding annotation is allowed.&quot;);
+    }
+    isMultipart = true;
+  } else if (annotation instanceof FormUrlEncoded) {
+    if (isMultipart) {
+      throw methodError(&quot;Only one encoding annotation is allowed.&quot;);
+    }
+    isFormEncoded = true;
+  }
+}
+</code></pre><p>参考地址：  </p>
+<p><a href="https://www.javacodegeeks.com/2012/11/java-annotations-tutorial-with-custom-annotation.html" target="_blank" rel="noopener">英文参考</a><br><a href="http://www.importnew.com/17413.html" target="_blank" rel="noopener">java注解教程</a></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢老板<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/alipay.JPG">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/wechat.JPG">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Markdown</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Android</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://xhh6019.github.io/2018/06/14/Java-注解-Annotations-小结/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2018/06/13/Gson的使用小结/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Gson的使用小结</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -226,9 +567,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
