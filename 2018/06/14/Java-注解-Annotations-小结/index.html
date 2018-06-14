@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="尾巴">
 <meta property="og:description" content="一直对Java注解的东西一知半解，对各个库中用到的注解方式也只能记住，并不知道原理。今天就找一些相关的资料做一些联系，学习一下。  Java1.5引入了注解，当前许多java框架中大量使用注解，如Hibernate、Jersey、Spring。注解作为程序的元数据嵌入到程序当中。注解可以被一些解析工具或者是编译工具进行解析。我们也可以声明注解在编译过程或执行时产生作用。 创建Java自定义注解@D">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-06-14T08:39:49.488Z">
+<meta property="og:updated_time" content="2018-06-14T08:49:44.528Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java 注解 Annotations 小结">
 <meta name="twitter:description" content="一直对Java注解的东西一知半解，对各个库中用到的注解方式也只能记住，并不知道原理。今天就找一些相关的资料做一些联系，学习一下。  Java1.5引入了注解，当前许多java框架中大量使用注解，如Hibernate、Jersey、Spring。注解作为程序的元数据嵌入到程序当中。注解可以被一些解析工具或者是编译工具进行解析。我们也可以声明注解在编译过程或执行时产生作用。 创建Java自定义注解@D">
@@ -204,14 +204,11 @@
 </ol>
 <p>这里有四种类型的元注解：</p>
 <ol>
-<li><p>@Documented —— 指明拥有这个注解的元素可以被javadoc此类的工具文档化。这种类型应该用于注解那些影响客户使用带注释的元素声明的类型。如果一种声明使用Documented进行注解，这种类型的注解被作为被标注的程序成员的公共API。</p>
-</li>
-<li><p>@Target——指明该类型的注解可以注解的程序元素的范围。该元注解的取值可以为TYPE,METHOD,CONSTRUCTOR,FIELD等。如果Target元注解没有出现，那么定义的注解可以应用于程序的任何元素。</p>
-</li>
-<li><p>@Inherited——指明该注解类型被自动继承。如果用户在当前类中查询这个元注解类型并且当前类的声明中不包含这个元注解类型，那么也将自动查询当前类的父类是否存在Inherited元注解，这个动作将被重复执行知道这个标注类型被找到，或者是查询到顶层的父类。</p>
-</li>
+<li>@Documented —— 指明拥有这个注解的元素可以被javadoc此类的工具文档化。这种类型应该用于注解那些影响客户使用带注释的元素声明的类型。如果一种声明使用Documented进行注解，这种类型的注解被作为被标注的程序成员的公共API。</li>
+<li>@Target——指明该类型的注解可以注解的程序元素的范围。该元注解的取值可以为TYPE,METHOD,CONSTRUCTOR,FIELD等。如果Target元注解没有出现，那么定义的注解可以应用于程序的任何元素。</li>
+<li>@Inherited——指明该注解类型被自动继承。如果用户在当前类中查询这个元注解类型并且当前类的声明中不包含这个元注解类型，那么也将自动查询当前类的父类是否存在Inherited元注解，这个动作将被重复执行知道这个标注类型被找到，或者是查询到顶层的父类。</li>
+<li>@Retention——指明了该Annotation被保留的时间长短。RetentionPolicy取值为SOURCE,CLASS,RUNTIME。</li>
 </ol>
-<p>4.@Retention——指明了该Annotation被保留的时间长短。RetentionPolicy取值为SOURCE,CLASS,RUNTIME。</p>
 <blockquote>
 <p>Java内建注解</p>
 <p>Java提供了三种内建注解。</p>
@@ -248,8 +245,10 @@
 <li>通过AnnotationsMain.class反射调用获取Methods。</li>
 <li>通过method的isAnnotationPresent接口判断是否使用了我们的注释MethodInfo.class。 </li>
 <li>最后通过MethodInfo methodAnno = method.getAnnotation(MethodInfo.class);获取注释接口实例。</li>
-<li><p>然后调用对应的revision()方法获取值。</p>
-<pre><code>    try {
+<li>然后调用对应的revision()方法获取值。</li>
+</ol>
+<p>代码：</p>
+<pre><code>try {
     for (Method method : AnnotationsMain.class
             .getClassLoader()
             .loadClass(&quot;com.xhh.client.AnnotationsMain&quot;)
@@ -268,7 +267,6 @@
                     System.out.print(&quot; comments=&quot; + methodAnno.comments());
                     System.out.println(&quot; value=&quot; + methodAnno.value());
                 }
-
             } catch (Throwable ex) {
                 ex.printStackTrace();
             }
@@ -277,9 +275,7 @@
 } catch (SecurityException | ClassNotFoundException e) {
     e.printStackTrace();
 }
-</code></pre></li>
-</ol>
-<p>输出的结果为：</p>
+</code></pre><p>输出的结果为：</p>
 <pre><code>method=public java.lang.String com.xhh.client.AnnotationsMain.toString()
 Annotation=@com.xhh.client.MethodInfo(value=abc, revision=8, comments=toString method)
 args: revision=8 comments=toString method value=abc
@@ -293,17 +289,17 @@ Annotation=@java.lang.Deprecated()
 Annotation=@com.xhh.client.MethodInfo(value=oldMethod, revision=1, comments=)
 args: revision=1 comments= value=oldMethod
 </code></pre><h4 id="简单分析Retrofit中的注释解析过程"><a href="#简单分析Retrofit中的注释解析过程" class="headerlink" title="简单分析Retrofit中的注释解析过程"></a>简单分析Retrofit中的注释解析过程</h4><ol>
-<li>定义一个service接口  </li>
+<li><p>定义一个service接口      </p>
+<p> public interface BlogService {</p>
+<pre><code>@GET(&quot;blog/{id}&quot;) //这里的{id} 表示是一个变量
+Call&lt;ResponseBody&gt; getBlog(/** 这里的id表示的是上面的{id} */@Path(&quot;id&quot;) int id);
+</code></pre><p> }</p>
+</li>
+<li><p>使用Retrofit的create接口实例化service接口  </p>
+<p> BlogService service = retrofit.create(BlogService.class);</p>
+</li>
 </ol>
-<pre><code>public interface BlogService {
-    @GET(&quot;blog/{id}&quot;) //这里的{id} 表示是一个变量
-    Call&lt;ResponseBody&gt; getBlog(/** 这里的id表示的是上面的{id} */@Path(&quot;id&quot;) int id);
-}
-</code></pre><ol start="2">
-<li>使用Retrofit的create接口实例化service接口  </li>
-</ol>
-<pre><code>BlogService service = retrofit.create(BlogService.class);
-</code></pre><p>进入create方法：</p>
+<p>进入create方法：</p>
 <pre><code>public &lt;T&gt; T create(final Class&lt;T&gt; service) {
     ...
     return (T) Proxy.newProxyInstance(service.getClassLoader(), new Class&lt;?&gt;[] { service },
@@ -637,11 +633,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Android</a>
+                <a href="javascript:void(0)" class="js-tag color3">android</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">android</a>
+                <a href="javascript:void(0)" class="js-tag color3">Android</a>
               </li>
              
               <li class="article-tag-list-item">
